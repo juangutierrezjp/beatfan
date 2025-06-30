@@ -4,10 +4,12 @@ import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Music, LogOut, LayoutDashboard, Plus } from "lucide-react"
 
-export default async function Navbar() {
-  const isLoggedIn = (await cookies()).get("isLoggedIn")?.value === "true"
-  const userRole = (await cookies()).get("userRole")?.value
+interface NavbarProps {
+  isLoggedIn: boolean
+  userRole?: string
+}
 
+export default function Navbar({ isLoggedIn, userRole }: NavbarProps) {
   const handleLogout = async () => {
     "use server"
     const cookieStore = await cookies()

@@ -4,6 +4,8 @@ import { DM_Serif_Display, Poppins, IBM_Plex_Sans } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
+import Navbar from "@/components/layout/navbar"
+import { cookies } from "next/headers"
 
 const dmSerifDisplay = DM_Serif_Display({
   subsets: ["latin"],
@@ -29,11 +31,15 @@ export const metadata: Metadata = {
     generator: 'v0.dev'
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const cookieStore = await cookies()
+  const isLoggedIn = cookieStore.get("isLoggedIn")?.value === "true"
+  const userRole = cookieStore.get("userRole")?.value
+
   return (
     <html
       lang="es"
@@ -47,6 +53,7 @@ export default function RootLayout({
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+          <Navbar isLoggedIn={isLoggedIn} userRole={userRole} />
           {children}
         </ThemeProvider>
       </body>
