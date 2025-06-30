@@ -5,13 +5,14 @@ import { Button } from "@/components/ui/button"
 import { Music, LogOut, LayoutDashboard, Plus } from "lucide-react"
 
 export default async function Navbar() {
-  const isLoggedIn = cookies().get("isLoggedIn")?.value === "true"
-  const userRole = cookies().get("userRole")?.value
+  const isLoggedIn = (await cookies()).get("isLoggedIn")?.value === "true"
+  const userRole = (await cookies()).get("userRole")?.value
 
   const handleLogout = async () => {
     "use server"
-    cookies().delete("isLoggedIn")
-    cookies().delete("userRole")
+    const cookieStore = await cookies()
+    cookieStore.delete("isLoggedIn")
+    cookieStore.delete("userRole")
     redirect("/")
   }
 
